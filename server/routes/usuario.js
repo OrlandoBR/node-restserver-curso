@@ -6,7 +6,15 @@ const _underscore = require('underscore'); //libreria que trae muchas funciones 
 
 const Usuario = require('../models/usuario'); //Este es el esquema
 
-app.get('/usuario', function(req, res) {
+
+//si tuviera mas modulos el archivo de autenticaion, en este caso
+// solo traeriamos la funcion de varificaToken.
+//Para traernos todo se podria hacer con
+// const verificaion = require('../middlewares/autenticacion');
+const { verificaToken, verificaRole } = require('../middlewares/autenticacion');
+
+
+app.get('/usuario', [verificaToken, verificaRole], function(req, res) {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -44,7 +52,7 @@ app.get('/usuario', function(req, res) {
 
 })
 
-app.post('/usuario', function(req, res) {
+app.post('/usuario', [verificaToken, verificaRole], function(req, res) {
 
         let body = req.body;
 
@@ -72,7 +80,7 @@ app.post('/usuario', function(req, res) {
 
     })
     //Reliza la actualizacion de un registro !
-app.put('/usuario/:id', function(req, res) {
+app.put('/usuario/:id', [verificaToken, verificaRole], function(req, res) {
 
     let id = req.params.id;
     let body = _underscore.pick(req.body, ['nombre', 'email', 'img', 'role', 'estado']);
@@ -96,7 +104,7 @@ app.put('/usuario/:id', function(req, res) {
 
 })
 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaRole], function(req, res) {
 
     let id = req.params.id;
     //let body = _underscore.pick(req.body, ['estado']);
