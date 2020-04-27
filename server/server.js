@@ -18,7 +18,6 @@ app.use(bodyParser.json())
 //app.use(express.static(path.resolve(__dirname, '/public')))
 app.use(express.static(__dirname + '/public'));
 
-
 //configuracon global de rutas.
 app.use(require('./routes/index.js'))
 
